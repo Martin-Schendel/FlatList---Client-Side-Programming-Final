@@ -1,7 +1,6 @@
 <template>
     <section>
         <h3>Oops! That didn't work...</h3>
-        <p>Maybe you mistyped your password?</p>
         <p>
             If you haven't yet made an account, you can do that on the Sign In
             page as well :)

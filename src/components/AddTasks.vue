@@ -4,7 +4,12 @@
             <h3>Add Tasks</h3>
             <form>
                 <label for="TaskID">Task Title:</label>
-                <input name="TaskID" type="text" v-model="addTaskForm.TaskID" />
+                <input
+                    name="TaskID"
+                    type="text"
+                    v-model="addTaskForm.TaskID"
+                    ref="taskinput"
+                />
                 <br />
                 <label for="Weight">Initial Weight(1-10):</label>
                 <input
@@ -72,7 +77,8 @@ export default {
                 })
                 .then(() => {
                     vm.addTaskForm.TaskID = "";
-                    vm.addTaskForm.Weight = "5";
+                    vm.addTaskForm.Weight = "5.5";
+                    vm.$refs.taskinput.focus();
                 });
         },
         enforceWeightLimit: function (newWeight) {

@@ -8,7 +8,7 @@ $auth = $_SESSION['auth'];
 
 $tasks = [];
 
-$stmt = $conn->prepare("SELECT * FROM task WHERE UserID = ?");
+$stmt = $conn->prepare("SELECT * FROM task WHERE UserID = ? ORDER BY task.Weight ASC");
 $stmt->bind_param("i",$_POST['UserID']);
 
 if($auth){

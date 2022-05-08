@@ -15,7 +15,7 @@ export default new Vuex.Store({
         },
         tasks: [],
         numLists: "3",
-        lists: [],
+        lists: [{}],
     },
     getters: {},
     mutations: {
@@ -36,6 +36,7 @@ export default new Vuex.Store({
             state.user.UserEmail = "";
         },
         getTasks: (state) => {
+            state.tasks = [];
             const formdata = new FormData();
             formdata.append("UserID", state.user.UserID);
             formdata.append("SessionID", state.session);
@@ -54,16 +55,16 @@ export default new Vuex.Store({
                 .then(() => {
                     state.numLists = "3";
                     state.lists = [];
-                    for (let i = 1; i <= state.numLists; i++) {
+                    for (let i = 0; i < state.numLists; i++) {
                         state.lists[i] = [];
-                        state.lists[i][0] = i;
+                        state.lists[i][0] = i + 1;
                     }
-                    let listToAddTo = 1;
+                    let listToAddTo = 0;
                     state.tasks.forEach((task) => {
-                        if (listToAddTo > state.numLists) {
-                            listToAddTo = 1;
+                        if (listToAddTo >= state.numLists) {
+                            listToAddTo = 0;
                         }
-                        state.lists[listToAddTo] += JSON.stringify(task);
+                        state.lists[listToAddTo].push(task);
                         listToAddTo++;
                     });
                 });
@@ -71,17 +72,25 @@ export default new Vuex.Store({
         setLists: (state, payload) => {
             state.numLists = payload.numLists;
             state.lists = [];
-            for (let i = 1; i <= state.numLists; i++) {
+            for (let i = 0; i < state.numLists; i++) {
                 state.lists[i] = [];
-                state.lists[i][0] = i;
+                state.lists[i][0] = i + 1;
             }
-            let listToAddTo = 1;
+            let listToAddTo = 0;
+            let direction = "ascending";
             state.tasks.forEach((task) => {
-                if (listToAddTo > state.numLists) {
-                    listToAddTo = 1;
+                if (listToAddTo == state.numLists) {
+                    direction = "descending";
                 }
-                state.lists[listToAddTo] += JSON.stringify(task);
-                listToAddTo++;
+                if (listToAddTo == 0) {
+                    direction = "ascending";
+                }
+                state.lists[listToAddTo].push(task);
+                if (direction == "ascending") {
+                    listToAddTo++;
+                } else {
+                    listToAddTo--;
+                }
             });
         },
     },

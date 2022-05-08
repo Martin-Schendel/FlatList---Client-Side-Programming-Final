@@ -115,6 +115,13 @@ h3 {
     border-radius: 0.1rem;
     color: white;
 }
+.centered {
+    margin: auto;
+    text-align: center;
+}
+.centered > * > * {
+    margin: 1rem;
+}
 section {
     border: 0.3rem solid var(--cc-lightgreen);
     border-radius: 0.5rem;
