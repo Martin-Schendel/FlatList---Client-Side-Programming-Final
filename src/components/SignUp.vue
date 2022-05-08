@@ -42,6 +42,7 @@ export default {
             formdata.append("UserEmail", vm.signUpForm.UserEmail);
             formdata.append("UserPassword", vm.signUpForm.UserPassword);
 
+            console.log(formdata);
             fetch("http://localhost/flatlist/src/php/addUser.php", {
                 method: "post",
                 body: formdata,

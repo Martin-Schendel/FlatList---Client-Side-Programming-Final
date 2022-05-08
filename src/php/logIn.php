@@ -1,5 +1,6 @@
 <?php
 require_once "config.php";
+session_start();
 
 $UserEmail = $_POST['UserEmail'];
 $UserPassword = $_POST['UserPassword'];
@@ -16,13 +17,6 @@ foreach ($result as $user){
         $_SESSION['UserLastName'] = $user['UserLastName'];
         $_SESSION['UserEmail'] = $user['UserEmail'];
         $_SESSION['auth'] = true;
-
-        $stmt = $conn->prepare("SELECT * FROM unit WHERE UserID = ? ORDER BY unit.Weight DESC");
-        $stmt->bind_param("s", $user['UserID']);
-        $stmt->execute();
-        foreach($result as $unit){
-
-        }
 
         $res["UserID"] = $_SESSION['UserID'];
         $res["UserFirstName"] = $_SESSION['UserFirstName'];

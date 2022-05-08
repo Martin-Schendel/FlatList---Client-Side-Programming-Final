@@ -28,12 +28,16 @@
                         </router-link>
                     </li>
                     <li v-if="auth()" id="navSurvey">
-                        <router-link to="/">Staff Survey</router-link>
+                        <router-link to="/staff-survey">
+                            Staff Survey
+                        </router-link>
                     </li>
                     <li v-if="auth()" id="navLists">
-                        <router-link to="/">My FlatLists</router-link>
+                        <router-link to="/my-flatlists">
+                            My FlatLists
+                        </router-link>
                     </li>
-                    <li v-if="auth()" id="navLists">
+                    <li v-if="auth() && FlatLists != 0" id="navLists">
                         <a href="logOut.php">Sign Out</a>
                     </li>
                 </ul>
@@ -52,6 +56,10 @@ export default {
         logOut: function () {
             store.commit("logOut");
         },
+        FlatLists: () => {
+            console.log("Lists:" + store.state.lists);
+            return store.state.lists;
+        },
     },
 };
 </script>
@@ -62,6 +70,7 @@ export default {
     --cc-lightgreen: rgb(23, 127, 103);
     --cc-darkgreen: rgb(10, 73, 59);
     --cc-yellow: rgb(253, 203, 53);
+    --cc-darkyellow: rgb(255, 191, 0);
     /* HexValues:
     lightblue: 25a2be
     darkblue: 115a9c
@@ -107,7 +116,7 @@ h3 {
     color: white;
 }
 section {
-    border: 0.3rem solid var(--cc-darkblue);
+    border: 0.3rem solid var(--cc-lightgreen);
     border-radius: 0.5rem;
     background-color: white;
     color: black;
@@ -146,16 +155,29 @@ nav ul li:hover {
     text-decoration: underline;
 }
 nav ul li a:hover {
-    color: var(--cc-darkblue);
+    color: var(--cc-lightgreen);
+}
+.weak {
+    color: rgb(82, 82, 82);
+    font-size: smaller;
+    width: 40%;
 }
 button {
     font-size: 1rem;
     border: none;
     padding: 10px;
     width: 100px;
-    background-color: var(--cc-darkblue);
+    background-color: var(--cc-lightgreen);
     color: white;
     margin: 1rem;
+}
+button:hover {
+    background-color: var(--cc-darkgreen);
+}
+button:active {
+    background-color: var(--cc-darkblue);
+    box-shadow: 0 2px #666;
+    transform: translateY(4px);
 }
 #toggleButton {
     position: absolute;
@@ -219,13 +241,14 @@ select {
 }
 
 label {
-    width: 40%;
+    width: 30%;
     /* Positions the label text beside the input */
     text-align: right;
 }
 input {
-    border: solid var(--cc-darkblue) 1px;
+    border: solid var(--cc-lightgreen) 1px;
     margin: 0px;
+    font-size: 1rem;
 }
 label + input,
 label + select {

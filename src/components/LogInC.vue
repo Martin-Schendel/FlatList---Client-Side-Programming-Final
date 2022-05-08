@@ -54,21 +54,22 @@ export default {
                 .then((response) => response.json())
                 .then(function (data) {
                     if (data.status == "success") {
-                        store.commit("setAuth", {
+                        store.commit("signIn", {
                             auth: data.auth,
                             session: data.session,
-                        });
-                        store.commit("setUser", {
+                            UserID: data.UserID,
                             UserFirstName: data.UserFirstName,
                             UserLastName: data.UserLastName,
                             UserEmail: data.UserEmail,
-                            UserPassword: data.UserPassword,
                         });
                         vm.logInForm.UserEmail = "";
                         vm.logInForm.UserPassword = "";
                     } else {
                         console.log(data);
                     }
+                })
+                .then(() => {
+                    store.commit("getTasks");
                 });
             vm.$router.push("manage-tasks");
         },
