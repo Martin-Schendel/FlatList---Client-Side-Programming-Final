@@ -77,20 +77,12 @@ export default new Vuex.Store({
                 state.lists[i][0] = i + 1;
             }
             let listToAddTo = 0;
-            let direction = "ascending";
             state.tasks.forEach((task) => {
-                if (listToAddTo == state.numLists) {
-                    direction = "descending";
-                }
-                if (listToAddTo == 0) {
-                    direction = "ascending";
+                if (listToAddTo >= state.numLists) {
+                    listToAddTo = 0;
                 }
                 state.lists[listToAddTo].push(task);
-                if (direction == "ascending") {
-                    listToAddTo++;
-                } else {
-                    listToAddTo--;
-                }
+                listToAddTo++;
             });
         },
     },

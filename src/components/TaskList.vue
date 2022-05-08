@@ -11,7 +11,13 @@
             <tr v-for="task in tasks" :key="task.TaskID">
                 <td>{{ task.TaskID }}</td>
                 <td>
-                    <input type="number" step="0.1" v-model="task.Weight" />
+                    <input
+                        type="number"
+                        step="0.1"
+                        v-model="task.Weight"
+                        min="1"
+                        max="10"
+                    />
                     <button
                         class="updateWeightBtn"
                         v-on:click.prevent="
