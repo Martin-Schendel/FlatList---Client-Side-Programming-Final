@@ -10,10 +10,23 @@
             </tr>
             <tr v-for="task in tasks" :key="task.TaskID">
                 <td>{{ task.TaskID }}</td>
-                <td>{{ task.Weight }}</td>
+                <td>
+                    <input type="number" step="0.1" v-model="task.Weight" />
+                    <button
+                        class="updateWeightBtn"
+                        v-on:click.prevent="
+                            overwriteTask(task.TaskID, task.Weight)
+                        "
+                    >
+                        Change Weight
+                    </button>
+                </td>
                 <td>{{ task.SurveyCount }}</td>
                 <td>
-                    <button v-on:click.prevent="" class="deleteTaskBtn">
+                    <button
+                        v-on:click.prevent="deleteTask(task.TaskID)"
+                        class="deleteTaskBtn"
+                    >
                         Delete
                     </button>
                 </td>
@@ -39,6 +52,62 @@ export default {
     computed: {
         tasks: () => {
             return store.state.tasks;
+        },
+    },
+    methods: {
+        deleteTask: (TaskID) => {
+            const formdata = new FormData();
+
+            formdata.append("TaskID", TaskID);
+            formdata.append("SessionID", store.state.session);
+            formdata.append("UserID", store.state.user.UserID);
+            fetch("http://localhost/flatlist/src/php/deleteTask.php", {
+                method: "post",
+                body: formdata,
+            })
+                .then((response) => response.json())
+                .then(function (data) {
+                    if (data.status == "success") {
+                        store.commit("getTasks");
+                    }
+                });
+        },
+        overwriteTask: (TaskID, Weight) => {
+            const formdata = new FormData();
+            const UserID = store.state.user.UserID;
+            const SessionID = store.state.session;
+
+            formdata.append("TaskID", TaskID);
+            formdata.append("SessionID", SessionID);
+            formdata.append("UserID", UserID);
+            fetch("http://localhost/flatlist/src/php/deleteTask.php", {
+                method: "post",
+                body: formdata,
+            })
+                .then((response) => response.json())
+                .then(function (data) {
+                    if (data.status == "success") {
+                        store.commit("getTasks");
+                    }
+                })
+                .then(() => {
+                    const frmdata = new FormData();
+                    frmdata.append("TaskID", TaskID);
+                    frmdata.append("UserID", UserID);
+                    frmdata.append("Weight", Weight);
+                    frmdata.append("SessionID", SessionID);
+
+                    fetch("http://localhost/flatlist/src/php/addTask.php", {
+                        method: "post",
+                        body: frmdata,
+                    })
+                        .then((response) => response.json())
+                        .then(function (data) {
+                            if (data.status == "success") {
+                                store.commit("getTasks");
+                            }
+                        });
+                });
         },
     },
 };
@@ -71,6 +140,10 @@ section {
 }
 .deleteTaskBtn:hover {
     background-color: var(--cc-darkyellow);
+    margin: auto;
+}
+.updateWeightBtn {
+    font-size: 0.7rem;
 }
 button:active {
     background-color: var(--cc-darkblue);
@@ -79,5 +152,10 @@ button:active {
 }
 a {
     color: var(--cc-darkblue);
+}
+input {
+    text-align: center;
+    width: 20%;
+    margin: auto;
 }
 </style>

@@ -18,7 +18,7 @@
                     <td>
                         <input
                             type="number"
-                            value="5.5"
+                            v-model="task.Weight"
                             step="0.1"
                             min="1"
                             max="10"
@@ -41,7 +41,27 @@ export default {
             return store.state.tasks;
         },
     },
-    methods: {},
+
+    methods: {
+        submitSurvey: function () {
+            const SessionID = store.state.session;
+            store.state.tasks.forEach((task) => {
+                const formdata = new FormData();
+
+                formdata.append("TaskID", task.TaskID);
+                formdata.append("UserID", task.UserID);
+                formdata.append("Weight", task.Weight);
+                formdata.append("SurveyCount", task.SurveyCount);
+                formdata.append("SessionID", SessionID);
+
+                fetch("http://localhost/flatlist/src/php/addTaskSurvey.php", {
+                    method: "post",
+                    body: formdata,
+                });
+            });
+            store.commit("getTasks");
+        },
+    },
 };
 </script>
 <style scoped>

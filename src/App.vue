@@ -203,7 +203,10 @@ button:active {
     background-color: var(--cc-darkblue);
     border-radius: 10px;
 }
-@media all and (max-width: 650px) {
+html {
+    min-width: 651px;
+}
+/* @media all and (max-width: 650px) {
     #navBar ul {
         flex-direction: column;
         width: 100%;
@@ -224,7 +227,7 @@ button:active {
     #navbar li {
         text-align: center;
     }
-}
+} */
 [v-cloak] > * {
     display: none;
 }
